@@ -9,6 +9,7 @@ import logger from './utils/logger';
 
 import authRoutes from './routes/auth.routes';
 import noteRoutes from './routes/note.routes';
+import todoRoutes from './routes/todo.routes';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
+app.use('/api/todos', todoRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'API is running' });

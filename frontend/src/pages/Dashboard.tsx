@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Box, Button, TextField, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, TextField, Typography, CircularProgress, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { notesService, type Note } from '../services/notes.service';
 import NotesList from '../components/NotesList';
 import NoteEditor from '../components/NoteEditor';
+import TodoList from '../components/todos/TodoList';
 
 const Dashboard: React.FC = () => {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -12,6 +13,9 @@ const Dashboard: React.FC = () => {
   
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | undefined>(undefined);
+  
+  const [viewMode, setViewMode] = useState<'notes' | 'todos'>('notes');
+  const [createTodoSignal, setCreateTodoSignal] = useState(0);
 
   const fetchNotes = async () => {
     try {
@@ -29,8 +33,12 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const handleCreate = () => {
-    setEditingNote(undefined);
-    setEditorOpen(true);
+    if (viewMode === 'notes') {
+      setEditingNote(undefined);
+      setEditorOpen(true);
+    } else {
+      setCreateTodoSignal(prev => prev + 1);
+    }
   };
 
   const handleEdit = (note: Note) => {
@@ -56,39 +64,58 @@ const Dashboard: React.FC = () => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4, alignItems: 'center' }}>
+      <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h4" component="h1">
           Dashboard
         </Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
-          New Note
-        </Button>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <RadioGroup
+            row
+            value={viewMode}
+            onChange={(e) => setViewMode(e.target.value as 'notes' | 'todos')}
+          >
+            <FormControlLabel value="notes" control={<Radio />} label="Notes" />
+            <FormControlLabel value="todos" control={<Radio />} label="Todos" />
+          </RadioGroup>
+          <Button variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
+            Add a task
+          </Button>
+        </Box>
       </Box>
 
-      <Box sx={{ mb: 4 }}>
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search notes..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </Box>
+      {viewMode === 'notes' ? (
+        <Box>
+          <Box sx={{ mb: 3 }}>
+            <TextField
+              fullWidth
+              size="small"
+              variant="outlined"
+              placeholder="Search notes..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Box>
 
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <CircularProgress />
+          {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <NotesList notes={filteredNotes} onEdit={handleEdit} onDelete={handleDelete} />
+          )}
+
+          <NoteEditor 
+            open={editorOpen} 
+            onClose={() => setEditorOpen(false)} 
+            onSave={fetchNotes}
+            note={editingNote}
+          />
         </Box>
       ) : (
-        <NotesList notes={filteredNotes} onEdit={handleEdit} onDelete={handleDelete} />
+        <Box>
+          <TodoList createSignal={createTodoSignal} />
+        </Box>
       )}
-
-      <NoteEditor 
-        open={editorOpen} 
-        onClose={() => setEditorOpen(false)} 
-        onSave={fetchNotes}
-        note={editingNote}
-      />
     </Box>
   );
 };
