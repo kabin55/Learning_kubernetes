@@ -76,7 +76,7 @@ const TodoSummaryCard: React.FC<Props> = ({ summary }) => {
               icon={<AssignmentIcon fontSize="large" />} 
               value={summary.total} 
               label="Total" 
-              gradient="linear-gradient(135deg, #3A1C71 0%, #D76D77 50%, #FFAF7B 100%)" 
+              gradient="#3f51b5" // Indigo
             />
           </Grid>
           
@@ -85,7 +85,7 @@ const TodoSummaryCard: React.FC<Props> = ({ summary }) => {
               icon={<CheckCircleIcon fontSize="large" />} 
               value={summary.completed} 
               label="Completed" 
-              gradient="linear-gradient(135deg, #11998e 0%, #38ef7d 100%)" 
+              gradient="#4caf50" // Green
             />
           </Grid>
           
@@ -94,7 +94,7 @@ const TodoSummaryCard: React.FC<Props> = ({ summary }) => {
               icon={<PendingIcon fontSize="large" />} 
               value={summary.pending} 
               label="Pending" 
-              gradient="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" 
+              gradient="#03a9f4" // Light Blue
             />
           </Grid>
           
@@ -103,7 +103,7 @@ const TodoSummaryCard: React.FC<Props> = ({ summary }) => {
               icon={<WarningIcon fontSize="large" />} 
               value={summary.overdue} 
               label="Overdue" 
-              gradient="linear-gradient(135deg, #ff0844 0%, #ffb199 100%)"
+              gradient="#f44336" // Red
             />
           </Grid>
           
@@ -112,7 +112,7 @@ const TodoSummaryCard: React.FC<Props> = ({ summary }) => {
               icon={<TodayIcon fontSize="large" />} 
               value={summary.dueToday} 
               label="Due Today" 
-              gradient="linear-gradient(135deg, #f6d365 0%, #fda085 100%)"
+              gradient="#ff9800" // Orange
             />
           </Grid>
           
@@ -126,7 +126,7 @@ const TodoSummaryCard: React.FC<Props> = ({ summary }) => {
                 flexDirection: 'column', 
                 justifyContent: 'center', 
                 borderRadius: 4,
-                background: 'linear-gradient(135deg, #42275a 0%, #734b6d 100%)',
+                background: '#9c27b0', // Purple
                 color: '#fff',
                 position: 'relative',
                 overflow: 'hidden',

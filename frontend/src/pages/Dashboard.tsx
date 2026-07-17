@@ -14,7 +14,7 @@ const Dashboard: React.FC = () => {
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | undefined>(undefined);
   
-  const [viewMode, setViewMode] = useState<'notes' | 'todos'>('notes');
+  const [viewMode, setViewMode] = useState<'notes' | 'todos'>('todos');
   const [createTodoSignal, setCreateTodoSignal] = useState(0);
 
   const fetchNotes = async () => {
